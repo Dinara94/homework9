@@ -1,15 +1,21 @@
 import React from "react";
-import { updateToDo, deleteToDo } from "../../../store/actions/actions";
+
 
 import { Button, Grid } from "@material-ui/core";
 
 export default function TodoListItem({ item, dispatch }) {
-  function onItemChange(id) {
-    dispatch(updateToDo(id));
+  function onItemChange() {
+    dispatch({
+      type: "update",
+      payload: item.id,
+    });
   };
 
-  function handleDeleteTodo(id) {
-    dispatch(deleteToDo(id));
+  function handleDeleteTodo() {
+    dispatch({
+      type: "delete",
+      payload: item.id,
+    });
   };
 
   return (

@@ -1,5 +1,4 @@
-import { CREATE, DELETE, UPDATE} from "../actions/actions";
-
+import { CREATE, DELETE, UPDATE } from "../actions/actions";
 
 const INITIAL_STATE = {
   list: [
@@ -22,7 +21,6 @@ const INITIAL_STATE = {
 };
 
 export default function reducers(state = INITIAL_STATE, { type, payload }) {
-  console.log(type, payload);
   switch (type) {
     case DELETE:
       return {
@@ -30,15 +28,20 @@ export default function reducers(state = INITIAL_STATE, { type, payload }) {
         list: state.list.filter((item) => item.id !== payload),
       };
 
-      case UPDATE: {
+    case UPDATE: {
       const item = state.list.find((element) => element.id === payload);
       const newItem = { ...item, completed: !item.completed };
-
-      return state.list.map((item) => (item.id !== payload ? item : newItem));
+      return {
+        ...state,
+        list: state.list.map((item) => (item.id !== payload ? item : newItem)),
+      };
     }
 
     case CREATE:
-      return {...state, payload};
+      return {
+        ...state,
+        list: [...state.list, payload],
+      };
     default:
       return state;
   }
