@@ -1,21 +1,63 @@
 import React from "react";
+import { updateToDo, deleteToDo } from "../../../store/actions/actions";
 
-export default function TodoListItem({ item }) {
-  const onItemClick = () => {
-    props.onToggle(props.item.id);
+import { Button, Grid } from "@material-ui/core";
+
+export default function TodoListItem({ item, dispatch }) {
+  function onItemChange(id) {
+    dispatch(updateToDo(id));
+  };
+
+  function handleDeleteTodo(id) {
+    dispatch(deleteToDo(id));
   };
 
   return (
-    <li onClick={onItemClick} style={getItemStyle(item)}>
-      {item.title}
-      <span onClick={onDeleteBtnClick}>X</span>
-    </li>
+    <Grid container direction="row" spacing={0} alignItems="center">
+      <li style={getItemStyle(item.completed)}>
+        <Grid>{item.title}</Grid>
+        <Grid>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={handleDeleteTodo}
+            style={btnStyle()}
+          >
+            Delete
+          </Button>
+        </Grid>
+        <Grid>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            onClick={onItemChange}
+            style={btnStyle()}
+          >
+            Change
+          </Button>
+        </Grid>
+      </li>
+    </Grid>
   );
 }
 
-function getItemStyle({ completed }) {
+function getItemStyle(completed) {
   return {
     cursor: "pointer",
-    backgroundColor: completed ? "green" : "yellow",
+    display: "flex",
+    flexFlow: "row nowrap",
+    justifyContent: "space-between",
+    width: "100%",
+    margin: "20px",
+    color: completed ? "blue" : "red",
+  };
+}
+
+function btnStyle() {
+  return {
+    display: "block",
+    marginLeft: "50px",
   };
 }

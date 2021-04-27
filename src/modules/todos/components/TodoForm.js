@@ -8,42 +8,52 @@ import {
   InputLabel
 } from "@material-ui/core";
 
-export default function TodoForm({ onSave }) {
-  const [todo, setTodo] = useState({ title: "" });
-  const newItem = {}
+export default function TodoForm({ dispatch }) {
+  const newItem = {
+    title: "",
+    completed: false,
+  }
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-
-    onSave(todo);
-    setTodo({ title: "" });
+    dispatch({
+      type: "create",
+      payload: newItem,
+    });
   };
 
   const onInputChange = (e) => {
-    setTodo({ ...todo, [e.target.name]: e.target.value });
+    newItem.title = e.target.value;
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="xs">
       <form onSubmit={onFormSubmit}>
         <FormControl fullWidth>
           <InputLabel htmlFor="name">New item name</InputLabel>
           <Input
             type="text"
             name="title"
-            value={todo.title}
             onChange={onInputChange}
           />
         </FormControl>
         <Button
          type="submit"
           variant="contained"
-          className={classes.usersFormButton}
           color="secondary"
+          style={btnFormStyle()}
         >
           Save
         </Button>
       </form>
     </Container>
   );
+}
+
+function btnFormStyle() {
+  return {
+    display: "block",
+    width: "25%",
+    margin: "30px auto",
+  };
 }
